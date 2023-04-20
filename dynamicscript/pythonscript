@@ -1,0 +1,36 @@
+#!/bin/python
+import boto3
+import json
+import pprint
+def get_hosts(ec2,fv):
+  f={'Name':'tag:Ansible','Values':[fv]}
+  hosts=[]
+  for each_in in ec2.instances.filter(filters=[f]):
+      #print each_in.private_ip_address
+      hosts.append(each_in.private_ip_address)
+  return hosts
+  
+def main():
+  ec2=boto3.resources("ec2")
+  db_group=get_hosts(ec2,"db")
+  app_group=get_hosts(ec2,"App")
+#  print "db: ",db_group
+#  print "app:",app_group
+  all_group= {
+             'db': {
+                'hosts':db_group,
+                'vars': {
+                      'group_name': 'Database group'
+                        }
+                    },
+              'app': {
+                 'hosts':app_group,
+                 'vars': {
+                      'group_name': 'Applcation group'
+                         }
+                     }
+               }
+   print json.dumps(all_groups)
+if ___name__=="__main__":
+    main()
+   
