@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 server_Name=$(uname -n)
 Ip_Address=$(ifconfig | grep inet | awk 'NR==1{print $2}')
 os_type=$(uname)
